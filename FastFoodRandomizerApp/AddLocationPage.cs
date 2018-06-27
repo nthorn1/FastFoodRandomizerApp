@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FastFoodRandomizerApp
@@ -15,6 +9,7 @@ namespace FastFoodRandomizerApp
     public partial class AddLocationPage : Form
     {
         SqlConnection Conn = new SqlConnection(connectionString: @"Server =.\sqlexpress; Initial Catalog = Fast Food Randomizer DB; Database= Fast Food Randomizer DB; integrated security = SSPI; user = nthorn; password = Test;");
+
         public AddLocationPage()
         {
             InitializeComponent();
@@ -28,11 +23,17 @@ namespace FastFoodRandomizerApp
                 {
                     CommandType = CommandType.StoredProcedure
                 };
+
                 cmd.Parameters.AddWithValue("@FastFoodChains", AddLocationTextBox.Text);
+
                 Conn.Open();
+
                 cmd.ExecuteNonQuery();
+
                 Conn.Close();
+
                 MessageBox.Show("Location Saved");
+
                 AddLocationTextBox.Text = string.Empty;
             }
             else

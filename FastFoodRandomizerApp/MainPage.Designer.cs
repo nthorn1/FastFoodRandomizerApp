@@ -58,6 +58,9 @@
             // 
             // Result
             // 
+            this.Result.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Result.AutoSize = true;
             this.Result.Location = new System.Drawing.Point(337, 279);
             this.Result.Name = "Result";
@@ -65,6 +68,7 @@
             this.Result.TabIndex = 2;
             this.Result.TabStop = true;
             this.Result.Text = "Fast Food Location";
+            this.Result.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Result.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Result_LinkClicked);
             // 
             // MainPage

@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-using System.Data;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using FlickrNet;
 using System.Net.Http;
 using Newtonsoft.Json;
-using System.Drawing;
-using System.IO;
-using System.Drawing.Imaging;
 
 namespace FastFoodRandomizerApp
 {
@@ -21,14 +13,19 @@ namespace FastFoodRandomizerApp
         {
             InitializeComponent();
         }
+
         SqlConnection Conn = new SqlConnection(connectionString: @"Server =.\sqlexpress; Initial Catalog = Fast Food Randomizer DB; Database= Fast Food Randomizer DB; integrated security = SSPI; user = nthorn; password = Test;");
+
         readonly string queryString = "SELECT Top 1 FastFoodChains FROM FastFoodChains ORDER BY NEWID()";
+
         private void FastFoodRandomizer_Click(object sender, EventArgs e)
         {
             try
             {
                 Conn.Open();
+
                 SqlCommand cmd = new SqlCommand(queryString, Conn);
+
                 using (SqlDataReader Reader = cmd.ExecuteReader())
                 {
                     while (Reader.Read())
@@ -46,43 +43,56 @@ namespace FastFoodRandomizerApp
         {
             FastFoodDeatailPage fastFoodDeatailPage = new FastFoodDeatailPage();
 
+            fastFoodDeatailPage.Show();
+
+            fastFoodDeatailPage.RestaurantName.Text = Result.Text;
+
             HttpClient client = new HttpClient();
-            string url = " https://api.flickr.com/services/rest/" +
-                "?method=flickr.photos.search" +
-                "&api_key=fb5dc380eb015efece04a1eb44bd425e" +
-                "&text=form1.Result.text" +
-                "&sort=Popular&per_page=1" +
-                "&page=1&format=json&nojsoncallback=1" +
-                "&api_sig=c3ccddeaa369d04d75dfff5e7b110b24";
-            string license = "4, 5, 6, 7";
-            license.Replace(",", "%2C");
-            string ApiText = Result.Text;
-            string flickrApiKey = "898db76e861ae522544ff18866386h50b";
-            var baseurl = string.Format(url, license, flickrApiKey, ApiText);
-            string flickrResult = await client.GetStringAsync(baseurl);
+
+            string UrlText = Result.Text;
+
+            string ApiKey = "898db76e861ae522544ff1886638650b";
+
+            string url = "https://api.flickr.com/services/rest/" +
+            "?method=flickr.photos.search" +
+            "&api_key={0}" +
+            "&tags=Restaurant" +
+            "&text={1}" +
+            "&sort=relevance" +
+            "&safe_search=1" +
+            "&per_page=1" +
+            "&page=1" +
+            "&format=json" +
+            "&nojsoncallback=1";
+
+            var baseurl = string.Format(url,
+                ApiKey,
+                UrlText);
+
+            var flickrResult = await client.GetStringAsync(baseurl);
+
             FlickrData apiData = JsonConvert.DeserializeObject<FlickrData>(flickrResult);
-            if (apiData.Stat == "ok")
+
+            //HttpResponseMessage response = client.GetAsync(url).Result;          
+            //MessageBox.Show(await response.Content.ReadAsStringAsync());
+
+            if (apiData.stat == "ok")
             {
-                foreach (Photo data in apiData.Photos.Photo)
+                foreach (Photo data in apiData.photos.photo)
                 {
                     string photoUrl = "http://farm{0}.staticflickr.com/{1}/{2}_{3}_n.jpg";
-                    string baseFlickrUrl = string.Format(photoUrl, data.Farm, data.Server, data.Id, data.Secret);
-                    Flickr f = new Flickr(flickrApiKey);
-                    PhotoSearchOptions options = new PhotoSearchOptions
-                    {
-                        Page = 1,
-                        PerPage = 1,
-                        Text = Result.Text
-                    };
-                    PhotoCollection searchResults = f.PhotosSearch(options);
-                    
 
-                    //fastFoodDeatailPage.pictureBox1.Image = searchResults;
+                    string baseFlickrUrl = string.Format(photoUrl, data.farm, data.server, data.id, data.secret);
+
+                    fastFoodDeatailPage.FlickrImage.Load(baseFlickrUrl);
+
                     break;
                 }
             }
-            fastFoodDeatailPage.Show();
-            fastFoodDeatailPage.RestaurantName.Text = Result.Text;
+            else
+            {
+                MessageBox.Show("Error Loading Image");
+            }
         }
         private void AddLocation_Click(object sender, EventArgs e)
         {
@@ -92,28 +102,29 @@ namespace FastFoodRandomizerApp
     }
     public class Photo
     {
-        public string Id { get; set; }
-        public string Owner { get; set; }
-        public string Secret { get; set; }
-        public string Server { get; set; }
-        public int Farm { get; set; }
-        public string Title { get; set; }
-        public int Ispublic { get; set; }
-        public int Isfriend { get; set; }
-        public int Isfamily { get; set; }
+        public string id { get; set; }
+        public string owner { get; set; }
+        public string secret { get; set; }
+        public string server { get; set; }
+        public int farm { get; set; }
+        public string title { get; set; }
+        public int ispublic { get; set; }
+        public int isfriend { get; set; }
+        public int isfamily { get; set; }
     }
+
     public class Photos
     {
-        public int Page { get; set; }
-        public int Pages { get; set; }
-        public int Perpage { get; set; }
-        public string Total { get; set; }
-        public List<object> Photo { get; set; }
+        public int page { get; set; }
+        public int pages { get; set; }
+        public int perpage { get; set; }
+        public string total { get; set; }
+        public List<Photo> photo { get; set; }
     }
 
     public class FlickrData
     {
-        public Photos Photos { get; set; }
-        public string Stat { get; set; }
+        public Photos photos { get; set; }
+        public string stat { get; set; }
     }
 }
