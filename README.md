@@ -3,7 +3,15 @@ The Fast Food Randomizer App selects and displays a fast food chain that is stor
 
 ### Installation Instructions
 
-1.) 
+1.) Download the zip file off of this page
+
+2.) Extract the the project to a folder on your hard drive
+
+3.) Run FastFoodRandomizerApp.sln
+
+4.) Open Sql Server Management studio and register a server with the name sqlexpress and create a database inside of sqlexpress named Fast Food Randomizer DB
+
+5.) Import the database file that was downloaded to the Fast Food Randomizer DB that was just created 
 
 ### Open Source and Example Code
 
