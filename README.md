@@ -13,6 +13,10 @@ The Fast Food Randomizer App selects and displays a fast food chain that is stor
 
 5.) Import the database file that was downloaded to the Fast Food Randomizer DB that was just created 
 
+6.) Run setup.exe in the Project Test Folder
+
+7.) Run FastFoodRandomizerApp.Application
+
 ### Open Source and Example Code
 
 Flickr Api 
