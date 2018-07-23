@@ -7,15 +7,15 @@ The Fast Food Randomizer App selects and displays a fast food chain that is stor
 
 2.) Extract the the project to a folder on your hard drive
 
-3.) Run FastFoodRandomizerApp.sln
+3.) Copy the Fat Food Randomizer DB.bak file and paste it into C:\Program Files\Microsoft Sql Server\MSSQL14.YOURSQLSERVER\MSSQL\Backup
 
-4.) Open Sql Server Management studio and register a server with the name sqlexpress and create a database inside of sqlexpress named Fast Food Randomizer DB
+4.) Open Sql Server Management studio and navigate to the servers that you wish to put the database on. Right click on the databases tab and then select Restore Database. Under source choose Device and then pick the file Fast Food Randomizer DB.bak
 
-5.) Import the database file that was downloaded to the Fast Food Randomizer DB that was just created 
+5.) Run FastFoodRandomizerApp.sln
 
-6.) Run setup.exe in the Project Test Folder
+6.) Adjust the connection strings under Mainpage.cs and AddLocationPage.cs to match your server. 
 
-7.) Run FastFoodRandomizerApp.Application
+7.) Start the project in visual studio.
 
 ### Open Source and Example Code
 
